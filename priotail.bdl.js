@@ -1,1 +1,44 @@
-const BASE_URL="https://happy-wilson-dcd15d.netlify.app/";function getQueryString(){var t=window.location.search.substr(1).split("&");if(""==t)return{};for(var e={},i=0;i<t.length;++i){var o=t[i].split("=",2);1==o.length?e[o[0]]="":e[o[0]]=decodeURIComponent(o[1].replace(/\+/g," "))}return e}function priotail(){if(i){var t=getQueryString("pt_shop"),e=getQueryString("product_no"),i=getQueryString("pt_tag"),o=document.createElement("iframe");o.id="iframe_priotail_section",o.src=`${BASE_URL}${t}/${e}/${i}`,o.style="position: relative; display: block; width: 100%; box-sizing: border-box; border-radius: 0px;",document.getElementById("priotail_section").appendChild(o),window.addEventListener("message",function(t){"priotail"==t.data.messageFrom&&(document.getElementById("iframe_priotail_section").height=document.getElementById("priotail_section").offsetWidth*t.data.ratio+10)})}}"complete"==document.readyState?priotail():window.addEventListener("load",priotail);
+
+    const BASE_URL = 'https://happy-wilson-dcd15d.netlify.app/'
+    function getQueryString() {
+        var a = window.location.search.substr(1).split('&');
+        if (a == "") return {};
+        var b = {};
+        for (var i = 0; i < a.length; ++i) {
+            var p = a[i].split('=', 2);
+            if (p.length == 1)
+                b[p[0]] = "";
+            else
+                b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+        }
+        return b;
+    }
+
+    function priotail() {
+        var priotail_shop = getQueryString('pt_shop')
+        var priotail_productNo = getQueryString('product_no')
+        var priotail_tag = getQueryString('pt_tag')
+
+        if (priotail_tag) {
+
+            var pt_frame = document.createElement("iframe");
+            pt_frame.id = 'iframe_priotail_section'
+            pt_frame.src = `${BASE_URL}${priotail_shop}/${priotail_productNo}/${priotail_tag}`
+            pt_frame.style = 'position: relative; display: block; width: 100%; box-sizing: border-box; border-radius: 0px;'
+
+            var element = document.getElementById("priotail_section");
+            element.appendChild(pt_frame);
+
+            window.addEventListener("message", function (e) {
+                if (e.data.messageFrom == "priotail") {
+                    document.getElementById("iframe_priotail_section").height = document.getElementById("priotail_section").offsetWidth * e.data.ratio;
+                }
+            });
+        }
+    }
+
+    if (document.readyState == 'complete') {
+        priotail();
+    } else {
+        window.addEventListener('load', priotail);
+    }
